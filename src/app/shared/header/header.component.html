@@ -1,1 +1,17 @@
-<p>Header Component works</p>
+<mat-toolbar>
+    <img id="firm-logo" src="firm-logo.jpeg" alt="">
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button> -->
+    <span>  &nbsp; Central Portal - {{firmName}}</span>
+    <span class="example-spacer"></span>
+    <mat-card>
+        <mat-card-content>
+            {{userFn}}
+            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+                <!-- <mat-icon>share</mat-icon> -->
+                <i class="material-icons">account_circle</i>
+              </button>
+        </mat-card-content>
+    </mat-card>
+  </mat-toolbar>
