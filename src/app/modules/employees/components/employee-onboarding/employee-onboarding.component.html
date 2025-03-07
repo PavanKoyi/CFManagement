@@ -1,0 +1,182 @@
+<div class="employee-onboarding-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Edit Employee' : 'New Employee' }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        <!-- Personal Information -->
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName">
+              <mat-error *ngIf="employeeForm.get('firstName')?.hasError('required')">
+                First name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName">
+              <mat-error *ngIf="employeeForm.get('lastName')?.hasError('required')">
+                Last name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email">
+              <mat-error *ngIf="employeeForm.get('email')?.hasError('required')">
+                Email is required
+              </mat-error>
+              <mat-error *ngIf="employeeForm.get('email')?.hasError('email')">
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="phone">
+              <mat-error *ngIf="employeeForm.get('phone')?.hasError('required')">
+                Phone number is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Date of Birth</mat-label>
+              <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth">
+              <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+              <mat-datepicker #dobPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Address</mat-label>
+              <textarea matInput formControlName="address" rows="1"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Employment Details -->
+        <div class="form-section">
+          <h3>Employment Details</h3>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startDatePicker" formControlName="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role">
+                <mat-option *ngFor="let role of roles" [value]="role">
+                  {{role}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="employment-type-section">
+            <label class="type-label">Employment Type</label>
+            <mat-radio-group formControlName="employmentType" class="employment-type-group">
+              <mat-radio-button value="FULL_TIME">Full Time</mat-radio-button>
+              <mat-radio-button value="CONTRACTOR">Contractor</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <!-- Full Time Employee Fields -->
+          <div class="conditional-section" *ngIf="employeeForm.get('employmentType')?.value === 'FULL_TIME'">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Annual Salary</mat-label>
+                <input matInput type="number" formControlName="annualSalary">
+                <span matPrefix>$&nbsp;</span>
+              </mat-form-field>
+            </div>
+
+            <h4>Medical Benefits</h4>
+            <div class="form-row" formGroupName="medical">
+              <mat-form-field appearance="outline">
+                <mat-label>Plan Type</mat-label>
+                <mat-select formControlName="planType">
+                  <mat-option *ngFor="let plan of medicalPlans" [value]="plan">
+                    {{plan}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Coverage Type</mat-label>
+                <mat-select formControlName="coverageType">
+                  <mat-option *ngFor="let coverage of coverageTypes" [value]="coverage">
+                    {{coverage}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <h4>401(k) Details</h4>
+            <div class="form-row" formGroupName="retirement401k">
+              <mat-form-field appearance="outline">
+                <mat-label>Contribution Percentage</mat-label>
+                <input matInput type="number" formControlName="contributionPercentage">
+                <span matSuffix>%</span>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Company Match</mat-label>
+                <input matInput type="number" formControlName="companyMatch">
+                <span matSuffix>%</span>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Contractor Fields -->
+          <div class="conditional-section" *ngIf="employeeForm.get('employmentType')?.value === 'CONTRACTOR'">
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Hourly Rate</mat-label>
+                <input matInput type="number" formControlName="hourlyRate">
+                <span matPrefix>$&nbsp;</span>
+                <span matSuffix>/hr</span>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Expected Hours per Week</mat-label>
+                <input matInput type="number" formControlName="expectedHoursPerWeek">
+                <span matSuffix>&nbsp;hrs</span>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Contract Duration (months)</mat-label>
+                <input matInput type="number" formControlName="contractDuration">
+                <span matSuffix>&nbsp;months</span>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="/employees">
+            <mat-icon>arrow_back</mat-icon>
+            Cancel
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid">
+            <mat-icon>save</mat-icon>
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

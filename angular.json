@@ -32,8 +32,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -43,6 +41,9 @@
             "prerender": true,
             "ssr": {
               "entry": "server.ts"
+            },
+            "viteBuildOptions": {
+              "configFile": "vite.config.ts"
             }
           },
           "configurations": {
@@ -100,8 +101,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": [

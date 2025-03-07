@@ -1,16 +1,32 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './shared/header/header.component';
-import { SideNavComponent } from './shared/side-nav/side-nav.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, SideNavComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    MatToolbarModule
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'CFM';
+  menuItems = [
+    { path: '/invoices', icon: 'receipt', label: 'Invoices' },
+    { path: '/people', icon: 'people', label: 'People' },
+    { path: '/employees', icon: 'badge', label: 'Employees' },
+    { path: '/guesthouses', icon: 'house', label: 'Guest Houses' }
+  ];
 }

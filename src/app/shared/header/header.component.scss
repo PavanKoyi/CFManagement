@@ -7,8 +7,8 @@ mat-toolbar {
 }
 
 #firm-logo {
-    height: 100%;
-    border-radius: 35px;
+    height: 80%;
+    border-radius: 30px;
 }
 
 #user-logo {
@@ -21,4 +21,20 @@ mat-card {
     height: 80%;
     width: fit-content;
     place-content: center;
+}
+
+mat-card-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.material-icons {
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+button[mat-menu-item] {
+    display: flex;
+    align-items: center;
 }

@@ -1,17 +1,28 @@
 <mat-toolbar>
     <img id="firm-logo" src="firm-logo.jpeg" alt="">
-    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button> -->
-    <span>  &nbsp; Central Portal - {{firmName}}</span>
+    <span>&nbsp; Central Portal - {{firmName}}</span>
     <span class="example-spacer"></span>
     <mat-card>
-        <mat-card-content>
+        <mat-card-content [matMenuTriggerFor]="userMenu" style="cursor: pointer;">
             {{userFn}}
-            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-                <!-- <mat-icon>share</mat-icon> -->
+            <button mat-icon-button class="example-icon">
                 <i class="material-icons">account_circle</i>
-              </button>
+            </button>
         </mat-card-content>
     </mat-card>
-  </mat-toolbar>
+
+    <mat-menu #userMenu="matMenu" xPosition="before">
+        <button mat-menu-item>
+            <i class="material-icons">person</i>
+            <span>Profile</span>
+        </button>
+        <button mat-menu-item>
+            <i class="material-icons">admin_panel_settings</i>
+            <span>Roles</span>
+        </button>
+        <button mat-menu-item>
+            <i class="material-icons">logout</i>
+            <span>Logout</span>
+        </button>
+    </mat-menu>
+</mat-toolbar>

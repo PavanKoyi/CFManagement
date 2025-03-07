@@ -1,0 +1,31 @@
+.guesthouse-list-container {
+  padding: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .status-available {
+    color: green;
+  }
+
+  .status-full {
+    color: red;
+  }
+
+  .status-maintenance {
+    color: orange;
+  }
+
+  mat-table {
+    width: 100%;
+  }
+
+  .mat-column-actions {
+    width: 120px;
+    text-align: right;
+  }
+}

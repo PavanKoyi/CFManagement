@@ -1,0 +1,163 @@
+
+.invoice-details-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .title-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      h1 {
+        margin: 0;
+      }
+
+      .status-chip {
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-weight: 500;
+        font-size: 14px;
+
+        &.draft { background-color: #e0e0e0; }
+        &.sent { background-color: #90caf9; }
+        &.paid { background-color: #a5d6a7; }
+        &.overdue { background-color: #ef9a9a; }
+      }
+    }
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+
+      .label {
+        color: rgba(0, 0, 0, 0.54);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .projects-section {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .project-card {
+      mat-card-content {
+        margin-top: 16px;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      .project-total {
+        margin-top: 16px;
+        text-align: right;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .invoice-summary {
+    margin-top: 24px;
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      
+      &.total {
+        border-top: 2px solid #eee;
+        font-weight: 700;
+        font-size: 1.2em;
+        margin-top: 8px;
+        padding-top: 16px;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    button {
+      height: 36px;
+      
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.email-section {
+  margin: 20px 0;
+
+  .full-width {
+    width: 100%;
+  }
+
+  .half-width {
+    width: 48%;
+    margin-right: 2%;
+  }
+
+  .recipients-section {
+    margin-bottom: 20px;
+
+    .recipient-field {
+      margin-bottom: 10px;
+    }
+
+    .recipient-chips {
+      margin-top: -10px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .additional-recipients {
+      display: flex;
+      gap: 16px;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+  }
+}
+
+:host ::ng-deep {
+  .mdc-evolution-chip-set {
+    gap: 8px;
+  }
+
+  .mdc-evolution-chip {
+    background-color: #e0e0e0;
+    
+    .mat-icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+      margin-left: 4px;
+    }
+  }
+}

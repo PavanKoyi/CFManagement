@@ -1,0 +1,54 @@
+<div class="people-list-container">
+  <div class="header">
+    <h2>People</h2>
+    <button mat-raised-button color="primary" (click)="addPerson()">
+      <mat-icon>add</mat-icon>
+      Add Person
+    </button>
+  </div>
+
+  <mat-table [dataSource]="people">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let person"> {{person.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let person"> {{person.email}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+      <mat-cell *matCellDef="let person"> {{person.role}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+      <mat-cell *matCellDef="let person"> {{person.phone}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="joinDate">
+      <mat-header-cell *matHeaderCellDef> Join Date </mat-header-cell>
+      <mat-cell *matCellDef="let person"> {{person.joinDate | date}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let person">
+        <button mat-icon-button (click)="viewPerson(person.id)" matTooltip="View Details">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button (click)="editPerson(person.id)" matTooltip="Edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="viewPayments(person.id)" matTooltip="Payment History">
+          <mat-icon>payments</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
