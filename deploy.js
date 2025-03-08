@@ -2,7 +2,7 @@ const ghpages = require('gh-pages');
 const path = require('path');
 
 const options = {
-    branch: 'feature/gh-pages',
+    branch: 'gh-pages',  // Using the standard gh-pages branch name
     dotfiles: true,
     message: 'Deploy to GitHub pages',
     nojekyll: true,
@@ -19,6 +19,6 @@ const callback = err => {
     }
 };
 
-const deployPath = path.resolve(__dirname, 'dist/cfm/browser');
+const deployPath = path.resolve(__dirname, 'dist/cfm');
 console.log('Deploying from:', deployPath);
 ghpages.publish(deployPath, options, callback);
