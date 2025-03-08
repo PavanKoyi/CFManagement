@@ -1,0 +1,12 @@
+{
+  "routes": [
+    "/employees",
+    "/employees/new",
+    "/guesthouses",
+    "/guesthouses/new",
+    "/invoices",
+    "/invoices/new",
+    "/people",
+    "/people/new"
+  ]
+}
