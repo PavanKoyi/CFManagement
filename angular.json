@@ -32,6 +32,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": [
@@ -41,9 +42,6 @@
             "prerender": true,
             "ssr": {
               "entry": "server.ts"
-            },
-            "viteBuildOptions": {
-              "configFile": "vite.config.ts"
             }
           },
           "configurations": {

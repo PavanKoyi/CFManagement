@@ -23,6 +23,9 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  firmName = 'Tech Minds Fusion';
+
   menuItems = [
     { path: '/invoices', icon: 'receipt', label: 'Invoices' },
     { path: '/people', icon: 'people', label: 'People' },

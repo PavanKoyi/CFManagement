@@ -146,11 +146,13 @@
           <div class="additional-recipients">
             <mat-form-field appearance="outline" class="half-width">
               <mat-label>CC</mat-label>
-              <input matInput type="email" formControlName="cc" placeholder="CC email address">
-              <button matSuffix mat-icon-button (click)="addRecipient('cc')"
-                      [disabled]="!emailForm.get('cc')?.valid">
-                <mat-icon>add</mat-icon>
-              </button>
+              <input matInput 
+                     type="email" 
+                     formControlName="cc" 
+                     placeholder="CC email address"
+                     [matChipInputFor]="chipGrid"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (matChipInputTokenEnd)="addRecipient('cc', $event)">
               <mat-error *ngIf="emailForm.get('cc')?.hasError('email')">
                 Please enter a valid email address
               </mat-error>
@@ -158,11 +160,13 @@
 
             <mat-form-field appearance="outline" class="half-width">
               <mat-label>BCC</mat-label>
-              <input matInput type="email" formControlName="bcc" placeholder="BCC email address">
-              <button matSuffix mat-icon-button (click)="addRecipient('bcc')"
-                      [disabled]="!emailForm.get('bcc')?.valid">
-                <mat-icon>add</mat-icon>
-              </button>
+              <input matInput 
+                     type="email" 
+                     formControlName="bcc" 
+                     placeholder="BCC email address"
+                     [matChipInputFor]="chipGrid"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (matChipInputTokenEnd)="addRecipient('bcc', $event)">
               <mat-error *ngIf="emailForm.get('bcc')?.hasError('email')">
                 Please enter a valid email address
               </mat-error>

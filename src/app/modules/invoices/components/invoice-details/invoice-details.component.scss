@@ -1,163 +1,115 @@
+.guesthouse-form-container {
+  padding: 20px;
+
+  mat-card {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .form-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+  }
+}
 
 .invoice-details-container {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-
-    .title-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-
-      h1 {
-        margin: 0;
-      }
-
-      .status-chip {
-        padding: 4px 12px;
-        border-radius: 16px;
-        font-weight: 500;
-        font-size: 14px;
-
-        &.draft { background-color: #e0e0e0; }
-        &.sent { background-color: #90caf9; }
-        &.paid { background-color: #a5d6a7; }
-        &.overdue { background-color: #ef9a9a; }
-      }
-    }
+    margin-bottom: 20px;
   }
 
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-
-      .label {
-        color: rgba(0, 0, 0, 0.54);
-        font-weight: 500;
-      }
-    }
-  }
-
-  .projects-section {
-    margin: 24px 0;
+  .title-section {
     display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-    .project-card {
-      mat-card-content {
-        margin-top: 16px;
-      }
-
-      table {
-        width: 100%;
-      }
-
-      .project-total {
-        margin-top: 16px;
-        text-align: right;
-        font-weight: 500;
-      }
-    }
+    align-items: center;
+    gap: 10px;
   }
 
-  .invoice-summary {
-    margin-top: 24px;
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      
-      &.total {
-        border-top: 2px solid #eee;
-        font-weight: 700;
-        font-size: 1.2em;
-        margin-top: 8px;
-        padding-top: 16px;
-      }
-    }
+  .status-chip {
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: capitalize;
   }
 
   .actions {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-
     button {
-      height: 36px;
-      
-      mat-icon {
-        margin-right: 8px;
-      }
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+
+  .invoice-info, .invoice-summary, .projects-section {
+    margin-bottom: 20px;
+  }
+
+  .info-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .client-info, .billing-info {
+      flex: 1;
+      min-width: 250px;
+    }
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+
+    &.total {
+      font-weight: bold;
+    }
+  }
+}
+
+.projects-section {
+  .project-card {
+    margin-bottom: 15px;
+
+    .project-total {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 10px;
     }
   }
 }
 
 .email-section {
-  margin: 20px 0;
+  .recipients-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
   .full-width {
     width: 100%;
   }
 
   .half-width {
-    width: 48%;
-    margin-right: 2%;
-  }
-
-  .recipients-section {
-    margin-bottom: 20px;
-
-    .recipient-field {
-      margin-bottom: 10px;
-    }
-
-    .recipient-chips {
-      margin-top: -10px;
-      margin-bottom: 10px;
-      width: 100%;
-    }
-
-    .additional-recipients {
-      display: flex;
-      gap: 16px;
-    }
+    width: calc(50% - 5px);
   }
 
   .action-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 20px;
-  }
-}
-
-:host ::ng-deep {
-  .mdc-evolution-chip-set {
     gap: 8px;
-  }
-
-  .mdc-evolution-chip {
-    background-color: #e0e0e0;
-    
-    .mat-icon {
-      font-size: 18px;
-      height: 18px;
-      width: 18px;
-      margin-left: 4px;
-    }
+    margin-top: 15px;
   }
 }
