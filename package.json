@@ -5,9 +5,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:CFM": "node dist/cfm/server/server.mjs"
+    "serve:ssr:CFM": "node dist/cfm/server/server.mjs",
+    "predeploy": "npm run build:prod",
+    "deploy": "node deploy.js"
   },
   "private": true,
   "dependencies": {
@@ -39,6 +42,7 @@
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
+    "gh-pages": "^6.3.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
