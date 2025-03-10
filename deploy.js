@@ -2,12 +2,14 @@ const ghpages = require('gh-pages');
 const path = require('path');
 
 const options = {
-    branch: 'gh-pages',  // Using the standard gh-pages branch name
+    branch: 'gh-pages',
     dotfiles: true,
     message: 'Deploy to GitHub pages',
     nojekyll: true,
     history: false,
-    repo: 'https://github.com/PavanKoyi/CFManagement.git'
+    repo: 'https://github.com/PavanKoyi/CFManagement.git',
+    silent: false,
+    dest: '.',  // Deploy to root of gh-pages branch
 };
 
 const callback = err => {
