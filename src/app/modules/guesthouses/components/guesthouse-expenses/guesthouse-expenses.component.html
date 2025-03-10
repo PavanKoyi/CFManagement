@@ -1,0 +1,96 @@
+<div class="expenses-container" *ngIf="guestHouse$ | async as guestHouse">
+  <mat-card class="main-info">
+    <mat-card-header>
+      <mat-card-title>{{guestHouse.name}} - Expenses</mat-card-title>
+      <mat-card-subtitle>{{guestHouse.address}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="expense-summary">
+        <div class="summary-item">
+          <span class="label">Total Expenses</span>
+          <span class="value">{{getTotalExpenses(guestHouse.expenses) | currency}}</span>
+        </div>
+        <div class="summary-item" *ngFor="let category of expenseCategories">
+          <span class="label">{{category}}</span>
+          <span class="value">{{getCategoryTotal(guestHouse.expenses, category) | currency}}</span>
+        </div>
+      </div>
+
+      <form [formGroup]="expenseForm" (ngSubmit)="onSubmit(guestHouse)" class="expense-form">
+        <h3>Add New Expense</h3>
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+              <mat-option *ngFor="let category of expenseCategories" [value]="category">
+                {{category}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" formControlName="amount">
+            <span matPrefix>$&nbsp;</span>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Paid By</mat-label>
+            <input matInput formControlName="paidBy">
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!expenseForm.valid">
+            Add Expense
+          </button>
+        </div>
+      </form>
+
+      <table mat-table [dataSource]="guestHouse.expenses" class="expense-table">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let expense">{{expense.date | date}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let expense">{{expense.category}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let expense">{{expense.description}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let expense">{{expense.amount | currency}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="paidBy">
+          <th mat-header-cell *matHeaderCellDef>Paid By</th>
+          <td mat-cell *matCellDef="let expense">{{expense.paidBy}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

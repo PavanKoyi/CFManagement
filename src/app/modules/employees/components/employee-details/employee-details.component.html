@@ -1,0 +1,90 @@
+<div class="employee-details-container" *ngIf="employee$ | async as employee">
+  <mat-card class="main-info">
+    <mat-card-header>
+      <div mat-card-avatar class="employee-avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+      <mat-card-title>{{employee.name}}</mat-card-title>
+      <mat-card-subtitle>{{employee.role}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="status-chip">
+        <mat-chip-listbox>
+          <mat-chip [color]="getStatusColor(employee)" selected>
+            {{getEmploymentStatus(employee)}}
+          </mat-chip>
+        </mat-chip-listbox>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-section">
+          <h3>Contact Information</h3>
+          <div class="info-item">
+            <mat-icon>email</mat-icon>
+            <span>{{employee.email}}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>phone</mat-icon>
+            <span>{{employee.phone}}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>location_on</mat-icon>
+            <span>{{employee.address}}</span>
+          </div>
+        </div>
+
+        <mat-divider vertical></mat-divider>
+
+        <div class="info-section">
+          <h3>Employment Details</h3>
+          <div class="info-item">
+            <mat-icon>calendar_today</mat-icon>
+            <span>Joined: {{employee.joinDate | date}}</span>
+          </div>
+          
+          <ng-container *ngIf="isFullTimeEmployee(employee)">
+            <div class="info-item">
+              <mat-icon>attach_money</mat-icon>
+              <span>Annual Salary: {{getAnnualSalary(employee) | currency}}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>health_and_safety</mat-icon>
+              <span>Medical Plan: {{getMedicalPlanInfo(employee)}}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>savings</mat-icon>
+              <span>401(k) Contribution: {{getRetirementContribution(employee)}}%</span>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="!isFullTimeEmployee(employee)">
+            <div class="info-item">
+              <mat-icon>payments</mat-icon>
+              <span>Hourly Rate: {{getHourlyRate(employee) | currency}}/hr</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>schedule</mat-icon>
+              <span>Expected Hours: {{getExpectedHours(employee)}} hrs/week</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>date_range</mat-icon>
+              <span>Contract Duration: {{getContractDuration(employee)}} months</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+      </button>
+      <button mat-raised-button color="primary" (click)="editEmployee(employee.id!)" *ngIf="employee.id">
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

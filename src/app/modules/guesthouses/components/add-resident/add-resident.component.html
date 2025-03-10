@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Add New Resident</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Select Employee</mat-label>
+      <mat-select formControlName="employee">
+        <mat-option *ngFor="let employee of availableEmployees$ | async" [value]="employee">
+          {{employee.name}} (ID: {{employee.id}})
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="residentForm.get('employee')?.errors?.['required']">
+        Employee is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Room Number</mat-label>
+      <mat-select formControlName="roomNumber">
+        <mat-option *ngFor="let room of availableRooms" [value]="room">
+          Room {{room}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="residentForm.get('roomNumber')?.errors?.['required']">
+        Room number is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Check-in Date</mat-label>
+      <input matInput [matDatepicker]="checkInPicker" formControlName="checkInDate">
+      <mat-datepicker-toggle matSuffix [for]="checkInPicker"></mat-datepicker-toggle>
+      <mat-datepicker #checkInPicker></mat-datepicker>
+      <mat-error *ngIf="residentForm.get('checkInDate')?.errors?.['required']">
+        Check-in date is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Expected Check-out Date</mat-label>
+      <input matInput [matDatepicker]="checkOutPicker" formControlName="expectedCheckOutDate">
+      <mat-datepicker-toggle matSuffix [for]="checkOutPicker"></mat-datepicker-toggle>
+      <mat-datepicker #checkOutPicker></mat-datepicker>
+      <mat-error *ngIf="residentForm.get('expectedCheckOutDate')?.errors?.['required']">
+        Expected check-out date is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!residentForm.valid">
+    Add Resident
+  </button>
+</mat-dialog-actions>

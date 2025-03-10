@@ -1,0 +1,206 @@
+<div class="invoice-details-container" *ngIf="invoice">
+  <div class="header">
+    <div class="title-section">
+      <h1>Invoice {{invoice.invoiceNumber}}</h1>
+      <div class="status-chip" [class]="invoice.status.toLowerCase()">
+        {{invoice.status}}
+      </div>
+    </div>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="generatePdf()">
+        <mat-icon>download</mat-icon>
+        Generate PDF
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="invoice-info">
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="client-info">
+          <h3>Bill To:</h3>
+          <p>{{invoice.clientName}}</p>
+          <p>{{invoice.clientAddress}}</p>
+        </div>
+        <div class="billing-info">
+          <div class="info-row">
+            <span class="label">Invoice Date:</span>
+            <span>{{invoice.date | date}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Due Date:</span>
+            <span>{{invoice.dueDate | date}}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Billing Period:</span>
+            <span>{{invoice.billingPeriod.startDate | date}} - {{invoice.billingPeriod.endDate | date}}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="projects-section">
+    <ng-container *ngFor="let project of invoice.projectBillings">
+      <mat-card class="project-card">
+        <mat-card-header>
+          <mat-card-title>{{project.projectName}}</mat-card-title>
+          <mat-card-subtitle>
+            Total Hours: {{project.totalHours}} | Rate: {{project.hourlyRate | currency}}/hr
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <table mat-table [dataSource]="project.entries">
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let entry">{{entry.date | date}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let entry">{{entry.description}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="hours">
+              <th mat-header-cell *matHeaderCellDef>Hours</th>
+              <td mat-cell *matCellDef="let entry">{{entry.hours}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let entry">{{entry.hours * entry.rate | currency}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['date', 'description', 'hours', 'amount']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['date', 'description', 'hours', 'amount'];"></tr>
+          </table>
+
+          <div class="project-total">
+            Subtotal: {{project.subtotal | currency}}
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </div>
+
+  <mat-card class="invoice-summary">
+    <mat-card-content>
+      <div class="summary-row">
+        <span>Total Hours:</span>
+        <span>{{getTotalHours()}}</span>
+      </div>
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span>{{invoice.subtotal | currency}}</span>
+      </div>
+      <div class="summary-row">
+        <span>Tax:</span>
+        <span>{{invoice.tax | currency}}</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total:</span>
+        <span>{{invoice.total | currency}}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="email-section" *ngIf="invoice">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Send Invoice</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="emailForm" (ngSubmit)="sendInvoiceByEmail()">
+        <!-- Recipients -->
+        <div class="recipients-section">
+          <div class="recipient-field">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>To</mat-label>
+              <input matInput
+                     type="email"
+                     formControlName="to"
+                     placeholder="Enter email address"
+                     [matChipInputFor]="chipGrid"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (matChipInputTokenEnd)="addRecipient('to', $event)">
+              <mat-error *ngIf="emailForm.get('to')?.hasError('email')">
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-chip-grid #chipGrid>
+              <mat-chip-row *ngFor="let recipient of recipients" 
+                            [removable]="true" 
+                            (removed)="removeRecipient(recipient)">
+                {{recipient.email}}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+          </div>
+
+          <div class="additional-recipients">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>CC</mat-label>
+              <input matInput 
+                     type="email" 
+                     formControlName="cc" 
+                     placeholder="CC email address"
+                     [matChipInputFor]="chipGrid"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (matChipInputTokenEnd)="addRecipient('cc', $event)">
+              <mat-error *ngIf="emailForm.get('cc')?.hasError('email')">
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>BCC</mat-label>
+              <input matInput 
+                     type="email" 
+                     formControlName="bcc" 
+                     placeholder="BCC email address"
+                     [matChipInputFor]="chipGrid"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (matChipInputTokenEnd)="addRecipient('bcc', $event)">
+              <mat-error *ngIf="emailForm.get('bcc')?.hasError('email')">
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Subject -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Subject</mat-label>
+          <input matInput formControlName="subject">
+          <mat-error *ngIf="emailForm.get('subject')?.hasError('required')">
+            Subject is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Message -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Message</mat-label>
+          <textarea matInput formControlName="message" rows="6"></textarea>
+        </mat-form-field>
+
+        <!-- Actions -->
+        <div class="action-buttons">
+          <button mat-button type="button" (click)="emailForm.reset()">
+            Clear
+          </button>
+          <button mat-raised-button color="primary" type="submit"
+                  [disabled]="!emailForm.valid || recipients.length === 0 || isEmailSending">
+            <mat-icon>send</mat-icon>
+            {{isEmailSending ? 'Sending...' : 'Send Invoice'}}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

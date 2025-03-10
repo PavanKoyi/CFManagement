@@ -1,0 +1,25 @@
+.people-list-container {
+  padding: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  mat-table {
+    width: 100%;
+  }
+
+  .mat-column-actions {
+    width: 120px;
+    text-align: right;
+  }
+}
+
+/* Component styles will go here */

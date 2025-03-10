@@ -1,0 +1,149 @@
+<div class="guesthouse-details-container" *ngIf="guestHouse$ | async as guestHouse">
+  <mat-card class="main-info">
+    <mat-card-header>
+      <mat-card-title>{{guestHouse.name}}</mat-card-title>
+      <mat-card-subtitle>{{guestHouse.address}}</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="status-banner" [ngClass]="'status-' + guestHouse.status.toLowerCase()">
+        <mat-icon>{{getStatusIcon(guestHouse.status)}}</mat-icon>
+        <span>{{guestHouse.status}}</span>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Occupancy</span>
+          <span class="value">{{guestHouse.currentOccupants}}/{{guestHouse.totalRooms}} rooms</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Monthly Rent</span>
+          <span class="value">{{guestHouse.monthlyRent | currency}}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Lease Period</span>
+          <span class="value">
+            {{guestHouse.leaseStartDate | date}} - 
+            {{calculateLeaseEndDate(guestHouse.leaseStartDate, guestHouse.leaseDuration) | date}}
+            ({{guestHouse.leaseDuration}} months)
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button [routerLink]="['/guesthouses', guestHouse.id, 'edit']">
+        <mat-icon>edit</mat-icon> Edit
+      </button>
+      <button mat-button [routerLink]="['/guesthouses', guestHouse.id, 'expenses']">
+        <mat-icon>receipt</mat-icon> Expenses
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div class="occupancy-section">
+    <mat-card class="current-residents">
+      <mat-card-header>
+        <mat-card-title>Current Residents</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <table mat-table [dataSource]="guestHouse.currentResidents">
+          <ng-container matColumnDef="employeeName">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let resident">{{resident.employeeName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="roomNumber">
+            <th mat-header-cell *matHeaderCellDef>Room</th>
+            <td mat-cell *matCellDef="let resident">{{resident.roomNumber}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="checkInDate">
+            <th mat-header-cell *matHeaderCellDef>Check-in Date</th>
+            <td mat-cell *matCellDef="let resident">{{resident.checkInDate | date}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="expectedCheckOutDate">
+            <th mat-header-cell *matHeaderCellDef>Expected Check-out</th>
+            <td mat-cell *matCellDef="let resident">
+              {{(resident.expectedCheckOutDate | date) ?? 'Not specified'}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let resident">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="viewResidentDetails(resident)">
+                  <mat-icon>person</mat-icon>
+                  <span>View Details</span>
+                </button>
+                <button mat-menu-item (click)="checkOutResident(resident)">
+                  <mat-icon>exit_to_app</mat-icon>
+                  <span>Check Out</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="residentColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: residentColumns;"></tr>
+        </table>
+
+        <div class="no-residents" *ngIf="guestHouse.currentResidents.length === 0">
+          <mat-icon>person_off</mat-icon>
+          <p>No current residents</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions *ngIf="hasAvailableRooms(guestHouse)">
+        <button mat-raised-button color="primary" (click)="addNewResident()">
+          <mat-icon>person_add</mat-icon>
+          Add New Resident
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="room-availability">
+      <mat-card-header>
+        <mat-card-title>Room Availability</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="availability-chart">
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-color occupied"></div>
+              <span>Occupied ({{guestHouse.currentOccupants}})</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color available"></div>
+              <span>Available ({{guestHouse.totalRooms - guestHouse.currentOccupants}})</span>
+            </div>
+          </div>
+          <mat-progress-bar
+            mode="determinate"
+            [value]="(guestHouse.currentOccupants / guestHouse.totalRooms) * 100">
+          </mat-progress-bar>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat-item">
+            <span class="stat-label">Occupancy Rate</span>
+            <span class="stat-value">
+              {{(guestHouse.currentOccupants / guestHouse.totalRooms) * 100 | number:'1.0-0'}}%
+            </span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Available Rooms</span>
+            <span class="stat-value">{{guestHouse.totalRooms - guestHouse.currentOccupants}}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
