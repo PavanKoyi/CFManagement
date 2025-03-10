@@ -5,12 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build --configuration production && node copy-index.js",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:CFM": "node dist/cfm/server/server.mjs",
+    "build:prod": "ng build --configuration production",
     "predeploy": "npm run build:prod",
-    "deploy": "node deploy.js"
+    "deploy": "node deploy.js",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
