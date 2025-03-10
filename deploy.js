@@ -9,7 +9,8 @@ const options = {
     history: false,
     repo: 'https://github.com/PavanKoyi/CFManagement.git',
     silent: false,
-    dest: '.',  // Deploy to root of gh-pages branch
+    dest: '.',
+    add: true // Add this to preserve files that were added to gh-pages branch
 };
 
 const callback = err => {
@@ -21,6 +22,10 @@ const callback = err => {
     }
 };
 
+// Create .nojekyll file
 const deployPath = path.resolve(__dirname, 'dist/cfm');
+const nojekyllPath = path.join(deployPath, '.nojekyll');
+require('fs').writeFileSync(nojekyllPath, '');
+
 console.log('Deploying from:', deployPath);
 ghpages.publish(deployPath, options, callback);
