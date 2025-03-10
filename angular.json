@@ -53,6 +53,7 @@
                   "maximumError": "4kB"
                 }
               ],
+              "baseHref": "/CFManagement/",
               "outputHashing": "all"
             },
             "development": {
