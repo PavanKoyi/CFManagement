@@ -23,6 +23,7 @@ export class SideNavComponent {
     { path: '/invoices', icon: 'receipt', label: 'Invoices' },
     { path: '/people', icon: 'people', label: 'People' },
     { path: '/employees', icon: 'badge', label: 'Employees' },
-    { path: '/guesthouses', icon: 'house', label: 'Accomodations' }
+    { path: '/guesthouses', icon: 'house', label: 'Accomodations' },
+    { path: '/personal-finances', icon: 'account_balance_wallet', label: 'Personal Finances' }
   ];
 }

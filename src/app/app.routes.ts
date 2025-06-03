@@ -21,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'guesthouses',
     loadChildren: () => import('./modules/guesthouses/guesthouses.module').then(m => m.GuestHousesModule)
+  },
+  {
+    path: 'personal-finances',
+    loadChildren: () => import('./modules/personal-finances/personal-finances.module').then(m => m.PersonalFinancesModule)
   }
 ];
