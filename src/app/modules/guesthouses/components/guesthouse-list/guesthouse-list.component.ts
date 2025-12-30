@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -21,11 +21,17 @@ import { GuestHouse } from '../../models/guesthouse.interface';
   templateUrl: './guesthouse-list.component.html',
   styleUrls: ['./guesthouse-list.component.scss']
 })
-export class GuestHouseListComponent {
+export class GuestHouseListComponent implements OnInit {
+  private guestHouseService = inject(GuestHouseService);
+  
   guestHouses$: Observable<GuestHouse[]>;
   displayedColumns: string[] = ['name', 'address', 'occupancy', 'status', 'actions'];
 
-  constructor(private guestHouseService: GuestHouseService) {
+  constructor() {
     this.guestHouses$ = this.guestHouseService.getGuestHouses();
+  }
+
+  ngOnInit(): void {
+    // Any additional initialization if needed
   }
 } 

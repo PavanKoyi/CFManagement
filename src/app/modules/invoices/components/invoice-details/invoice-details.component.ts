@@ -17,6 +17,7 @@ import { EmailRequest, EmailRecipient } from '../../models/email.interface';
 import { EMPTY, Observable, catchError, finalize, tap } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { FilterByTypePipe } from '../../pipes/filter-by-type.pipe';
 
 @Component({
   selector: 'app-invoice-details',
@@ -32,7 +33,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
     MatInputModule,
     MatFormFieldModule,
     MatChipsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    FilterByTypePipe
   ],
   templateUrl: './invoice-details.component.html',
   styleUrls: ['./invoice-details.component.scss']
@@ -103,7 +105,8 @@ export class InvoiceDetailsComponent implements OnInit {
     if (this.invoice.contactEmail && this.invoice.contactName) {
       this.recipients.push({
         email: this.invoice.contactEmail,
-        name: this.invoice.contactName
+        name: this.invoice.contactName,
+        type: 'to'
       });
     }
   }
@@ -128,16 +131,34 @@ ${this.invoice.companyName}`;
     return date ? new Date(date).toLocaleDateString() : 'N/A';
   }
 
-  addRecipient(type: 'to' | 'cc' | 'bcc', event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+  addRecipient(type: 'to' | 'cc' | 'bcc', event?: MatChipInputEvent | null): void {
+    const value = event && 'value' in event
+      ? event.value?.trim() 
+      : this.emailForm.get(type)?.value?.trim();
+    
     const control = this.emailForm.get(type);
 
-    if (value && control?.valid) {
-      this.recipients.push({ email: value });
-      // Clear the input value
-      event.chipInput!.clear();
-      control.reset();
+    if (value && control) {
+      // Add recipient only if email is valid
+      if (this.isValidEmail(value)) {
+        this.recipients.push({ 
+          email: value, 
+          type 
+        });
+        // Clear the input
+        if (event && 'chipInput' in event) {
+          event.chipInput!.clear();
+        }
+        control.reset();
+      } else {
+        this.showErrorMessage('Invalid email address');
+      }
     }
+  }
+
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
   }
 
   removeRecipient(recipient: EmailRecipient): void {
@@ -202,11 +223,14 @@ ${this.invoice.companyName}`;
   private prepareEmailRequest(): EmailRequest {
     if (!this.invoice) throw new Error('Invoice is not loaded');
 
+    const ccValue = this.emailForm.get('cc')?.value;
+    const bccValue = this.emailForm.get('bcc')?.value;
+
     return {
       recipients: {
-        to: this.recipients,
-        cc: this.emailForm.get('cc')?.value ? [{ email: this.emailForm.get('cc')?.value }] : [],
-        bcc: this.emailForm.get('bcc')?.value ? [{ email: this.emailForm.get('bcc')?.value }] : []
+        to: this.recipients.filter(r => r.type === 'to'),
+        cc: ccValue ? [{ email: ccValue, type: 'cc' }] : [],
+        bcc: bccValue ? [{ email: bccValue, type: 'bcc' }] : []
       },
       template: {
         subject: this.emailForm.get('subject')?.value || '',

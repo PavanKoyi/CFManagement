@@ -6,22 +6,54 @@ mat-sidenav-container {
 mat-sidenav {
   width: 250px;
   background-color: #f5f5f5;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.mat-list-item {
-  margin: 8px 0;
-  
-  mat-icon {
-    margin-right: 8px;
+mat-nav-list {
+  padding: 8px 0;
+
+  ::ng-deep .mat-mdc-list-item {
+    padding: 0;
+    margin: 4px 8px;
   }
-}
 
-.active {
-  background-color: #e0e0e0;
+  a {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 16px;
+    border-radius: 87px;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87);
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &.active {
+      background-color: rgba(0, 0, 0, 0.08);
+      color: #1976d2;
+
+      mat-icon {
+        color: #1976d2;
+      }
+    }
+
+    mat-icon {
+      margin-right: 16px;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
 }
 
 mat-sidenav-content {
   padding: 20px;
+  background-color: #fafafa;
 }
 mat-sidenav-container {
   height: calc(100vh - 64px);
@@ -30,20 +62,52 @@ mat-sidenav-container {
 mat-sidenav {
   width: 250px;
   background-color: #f5f5f5;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.mat-list-item {
-  margin: 8px 0;
-  
-  mat-icon {
-    margin-right: 8px;
+mat-nav-list {
+  padding: 8px 0;
+
+  ::ng-deep .mat-mdc-list-item {
+    padding: 0;
+    margin: 4px 8px;
   }
-}
 
-.active {
-  background-color: #e0e0e0;
+  a {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 16px;
+    border-radius: 87px;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87);
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &.active {
+      background-color: rgba(0, 0, 0, 0.08);
+      color: #1976d2;
+
+      mat-icon {
+        color: #1976d2;
+      }
+    }
+
+    mat-icon {
+      margin-right: 16px;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
 }
 
 mat-sidenav-content {
   padding: 20px;
+  background-color: #fafafa;
 }

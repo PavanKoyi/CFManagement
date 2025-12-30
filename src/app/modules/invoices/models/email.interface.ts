@@ -1,6 +1,7 @@
 export interface EmailRecipient {
   email: string;
   name?: string;
+  type: 'to' | 'cc' | 'bcc';
 }
 
 export interface EmailAttachment {
