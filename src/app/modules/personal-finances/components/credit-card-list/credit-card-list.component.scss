@@ -1,0 +1,22 @@
+.credit-card-list-container {
+  padding: 20px;
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    h2 {
+      margin: 0;
+    }
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    
+    .credit-card-table {
+      width: 100%;
+    }
+  }
+}

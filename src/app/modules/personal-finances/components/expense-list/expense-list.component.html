@@ -1,0 +1,96 @@
+<div class="expense-list-container">
+  <div class="header">
+    <h2>Expenses</h2>
+    <button mat-raised-button color="primary" (click)="addExpense()">
+      <mat-icon>add</mat-icon>
+      Add Expense
+    </button>
+  </div>
+  
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Filter by Card</mat-label>
+      <mat-select [(ngModel)]="selectedCardId" (selectionChange)="filterExpensesByCard()">
+        <mat-option [value]="undefined">All Cards</mat-option>
+        <mat-option *ngFor="let card of creditCards$ | async" [value]="card.id">
+          {{ card.cardName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Filter by Category</mat-label>
+      <mat-select [(ngModel)]="filterCategory" (selectionChange)="filterExpensesByCategory()">
+        <mat-option [value]="">All Categories</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <button mat-button color="accent" (click)="clearFilters()">
+      <mat-icon>clear</mat-icon> Clear Filters
+    </button>
+  </div>
+  
+  <div class="table-container">
+    <table mat-table [dataSource]="(expenses$ | async) || []" class="expense-table">
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.date | date:'shortDate' }}</td>
+      </ng-container>
+      
+      <!-- Description Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.description }}</td>
+      </ng-container>
+      
+      <!-- Category Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let expense">
+          <span class="category-chip">{{ expense.category }}</span>
+        </td>
+      </ng-container>
+      
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let expense">${{ expense.amount.toFixed(2) }}</td>
+      </ng-container>
+      
+      <!-- Payment Method Column -->
+      <ng-container matColumnDef="paymentMethod">
+        <th mat-header-cell *matHeaderCellDef>Payment Method</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.paymentMethod }}</td>
+      </ng-container>
+      
+      <!-- Reimbursable Column -->
+      <ng-container matColumnDef="isReimbursable">
+        <th mat-header-cell *matHeaderCellDef>Reimbursable</th>
+        <td mat-cell *matCellDef="let expense">
+          <mat-icon *ngIf="expense.isReimbursable" color="primary">check_circle</mat-icon>
+          <mat-icon *ngIf="!expense.isReimbursable" color="warn">cancel</mat-icon>
+        </td>
+      </ng-container>
+      
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let expense">
+          <button mat-icon-button color="primary" (click)="editExpense(expense.id!)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteExpense(expense.id!)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

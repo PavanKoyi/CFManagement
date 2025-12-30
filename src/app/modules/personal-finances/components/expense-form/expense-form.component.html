@@ -1,0 +1,75 @@
+<div class="expense-form-container">
+  <h2>{{ isEditMode ? 'Edit' : 'Add' }} Expense</h2>
+  
+  <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="datePicker" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+        <mat-error *ngIf="expenseForm.get('date')?.hasError('required')">Date is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description" placeholder="What was this expense for?">
+        <mat-error *ngIf="expenseForm.get('description')?.hasError('required')">Description is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns">
+      <mat-form-field appearance="outline">
+        <mat-label>Amount ($)</mat-label>
+        <input matInput type="number" formControlName="amount" step="0.01">
+        <mat-error *ngIf="expenseForm.get('amount')?.hasError('required')">Amount is required</mat-error>
+        <mat-error *ngIf="expenseForm.get('amount')?.hasError('min')">Amount must be greater than 0</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="expenseForm.get('category')?.hasError('required')">Category is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns">
+      <mat-form-field appearance="outline">
+        <mat-label>Payment Method</mat-label>
+        <mat-select formControlName="paymentMethod">
+          <mat-option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="expenseForm.get('paymentMethod')?.hasError('required')">Payment method is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" *ngIf="expenseForm.get('paymentMethod')?.value === 'CREDIT_CARD'">
+        <mat-label>Credit Card</mat-label>
+        <mat-select formControlName="creditCardId">
+          <mat-option *ngFor="let card of creditCards$ | async" [value]="card.id">{{ card.cardName }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="expenseForm.get('creditCardId')?.hasError('required')">Credit card is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Tags (comma separated)</mat-label>
+        <input matInput formControlName="tags" placeholder="e.g. business, travel, client">
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns checkbox-row">
+      <mat-checkbox formControlName="isReimbursable">Reimbursable</mat-checkbox>
+      <mat-checkbox formControlName="isReimbursed" *ngIf="expenseForm.get('isReimbursable')?.value">Reimbursed</mat-checkbox>
+    </div>
+    
+    <div class="form-actions">
+      <button mat-button type="button" (click)="cancel()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="expenseForm.invalid">Save</button>
+    </div>
+  </form>
+</div>

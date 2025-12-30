@@ -1,0 +1,33 @@
+.card-form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  .form-row {
+    margin-bottom: 16px;
+    
+    mat-form-field {
+      width: 100%;
+    }
+    
+    &.two-columns {
+      display: flex;
+      gap: 16px;
+      
+      mat-form-field {
+        flex: 1;
+      }
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+  }
+}

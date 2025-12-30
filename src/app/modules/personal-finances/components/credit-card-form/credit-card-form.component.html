@@ -1,0 +1,120 @@
+<div class="card-form-container">
+  <h2>{{ isEditMode ? 'Edit' : 'Add' }} Credit Card</h2>
+  
+  <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Card Name</mat-label>
+        <input matInput formControlName="cardName" placeholder="e.g. My Rewards Card">
+        <mat-error *ngIf="cardForm.get('cardName')?.hasError('required')">Card name is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Card Number</mat-label>
+        <input matInput formControlName="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX">
+        <mat-error *ngIf="cardForm.get('cardNumber')?.hasError('required')">Card number is required</mat-error>
+        <mat-error *ngIf="cardForm.get('cardNumber')?.hasError('pattern')">Format must be XXXX-XXXX-XXXX-XXXX</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns">
+      <mat-form-field appearance="outline">
+        <mat-label>Card Type</mat-label>
+        <mat-select formControlName="cardType">
+          <mat-option *ngFor="let type of cardTypes" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="cardForm.get('cardType')?.hasError('required')">Card type is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Issuer</mat-label>
+        <input matInput formControlName="issuer" placeholder="e.g. Chase, Citi, etc.">
+        <mat-error *ngIf="cardForm.get('issuer')?.hasError('required')">Issuer is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Expiry Date</mat-label>
+        <input matInput [matDatepicker]="expiryPicker" formControlName="expiryDate">
+        <mat-datepicker-toggle matSuffix [for]="expiryPicker"></mat-datepicker-toggle>
+        <mat-datepicker #expiryPicker></mat-datepicker>
+        <mat-error *ngIf="cardForm.get('expiryDate')?.hasError('required')">Expiry date is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns">
+      <mat-form-field appearance="outline">
+        <mat-label>Credit Limit ($)</mat-label>
+        <input matInput type="number" formControlName="creditLimit">
+        <mat-error *ngIf="cardForm.get('creditLimit')?.hasError('required')">Credit limit is required</mat-error>
+        <mat-error *ngIf="cardForm.get('creditLimit')?.hasError('min')">Must be a positive number</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Current Balance ($)</mat-label>
+        <input matInput type="number" formControlName="currentBalance">
+        <mat-error *ngIf="cardForm.get('currentBalance')?.hasError('required')">Current balance is required</mat-error>
+        <mat-error *ngIf="cardForm.get('currentBalance')?.hasError('min')">Must be a positive number</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns">
+      <mat-form-field appearance="outline">
+        <mat-label>Statement Date (Day of Month)</mat-label>
+        <input matInput type="number" formControlName="statementDate" min="1" max="31">
+        <mat-error *ngIf="cardForm.get('statementDate')?.hasError('required')">Statement date is required</mat-error>
+        <mat-error *ngIf="cardForm.get('statementDate')?.hasError('min') || cardForm.get('statementDate')?.hasError('max')">
+          Must be between 1-31
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Payment Due Date (Day of Month)</mat-label>
+        <input matInput type="number" formControlName="paymentDueDate" min="1" max="31">
+        <mat-error *ngIf="cardForm.get('paymentDueDate')?.hasError('required')">Payment due date is required</mat-error>
+        <mat-error *ngIf="cardForm.get('paymentDueDate')?.hasError('min') || cardForm.get('paymentDueDate')?.hasError('max')">
+          Must be between 1-31
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns">
+      <mat-form-field appearance="outline">
+        <mat-label>Minimum Payment (%)</mat-label>
+        <input matInput type="number" formControlName="minPaymentPercentage">
+        <mat-error *ngIf="cardForm.get('minPaymentPercentage')?.hasError('required')">Minimum payment % is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Annual Fee ($)</mat-label>
+        <input matInput type="number" formControlName="annualFee">
+        <mat-error *ngIf="cardForm.get('annualFee')?.hasError('required')">Annual fee is required</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row two-columns">
+      <mat-form-field appearance="outline">
+        <mat-label>Interest Rate (%)</mat-label>
+        <input matInput type="number" formControlName="interestRate">
+        <mat-error *ngIf="cardForm.get('interestRate')?.hasError('required')">Interest rate is required</mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Reward Points</mat-label>
+        <input matInput type="number" formControlName="rewardPoints">
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+      <mat-checkbox formControlName="isActive">Active Card</mat-checkbox>
+    </div>
+    
+    <div class="form-actions">
+      <button mat-button type="button" (click)="cancel()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="cardForm.invalid">Save</button>
+    </div>
+  </form>
+</div>
